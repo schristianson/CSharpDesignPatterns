@@ -26,11 +26,15 @@ namespace CSharpDesignPatterns
                 return _isWide;
             }
         }
-
         public AbstractWheel(int size, bool isWide)
         {
             this._size = size;
             this._isWide = isWide;
+        }
+
+        public override string ToString()
+        {
+            return this.GetType().Name + " with a wheel size of " + _size + " inches";
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AbstractFactory;
 using Builder;
+using Singleton;
+using Adapter;
+using Decorator;
 
 namespace CSharpDesignPatterns
 {
@@ -12,8 +15,49 @@ namespace CSharpDesignPatterns
     {
         static void Main(string[] args)
         {
-            BuilderPatternDemo();
-           //AbstractFactoryDemo();
+            DecoratorPatternDemo();
+            //AdapterPatternDemo();
+            //SingletonPatternDemo();
+            //BuilderPatternDemo();
+            //AbstractFactoryDemo();
+        }
+
+        private static void DecoratorPatternDemo()
+        {
+            //Standard Touring Bike
+            IBicycle myTourbike = new Touring(new NarrowWheel(24));
+            Console.WriteLine(myTourbike);
+
+            // Touring bike with custom grips
+            myTourbike = new CustomGripOption(myTourbike);
+            Console.WriteLine(myTourbike);
+
+            // Touring bike with leather seat
+            myTourbike = new LeatherSeatOption(myTourbike);
+            Console.WriteLine(myTourbike);
+        }
+
+        private static void AdapterPatternDemo()
+        {
+            IList<IWheel> wheels = new List<IWheel>();
+            wheels.Add(new NarrowWheel(24));
+            wheels.Add(new WideWheel(20));
+            wheels.Add(new NarrowWheel(26));
+            wheels.Add(new UltraWheelAdapter(new UltraWheel(28)));
+
+            foreach (IWheel wheel in wheels)
+            {
+                Console.WriteLine(wheel);
+            }
+        }
+
+        private static void SingletonPatternDemo()
+        {
+            SerialNumberGenerator generator = SerialNumberGenerator.Instance;
+
+            Console.WriteLine("next serial " + generator.NextSerial);
+            Console.WriteLine("next serial " + SerialNumberGenerator.Instance.NextSerial);
+            Console.WriteLine("next serial " + generator.NextSerial);
         }
 
         private static void BuilderPatternDemo()
@@ -34,7 +78,7 @@ namespace CSharpDesignPatterns
              * methods that it created, that its child ues. Any child types created, cannot be seen unless
              * it was first created by the parent.
              * This class object factory can only see the methods that it created, even from its child
-             */ 
+             */
             AbstractBikeFactory factory = new RoadBikeFactory();   //RoadBikeFactory constructor from its child class
 
             /* 
