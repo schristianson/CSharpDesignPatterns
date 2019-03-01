@@ -8,18 +8,85 @@ using Builder;
 using Singleton;
 using Adapter;
 using Decorator;
+using Facade;
+using Iterator;
+using System.Collections;
+using Observer;
 
 namespace CSharpDesignPatterns
+
 {
     class Program
     {
         static void Main(string[] args)
         {
-            DecoratorPatternDemo();
+            ObserverPatternDemo();
+            //IteratorPatternDemo2();
+            //IteratorPatternDemo();
+            //FacadePatternDemo();
+            //DecoratorPatternDemo();
             //AdapterPatternDemo();
             //SingletonPatternDemo();
             //BuilderPatternDemo();
             //AbstractFactoryDemo();
+        }
+
+        private static void ObserverPatternDemo()
+        {
+            Speedometer mySpeedometer = new Speedometer();
+            SpeedMonitor monitor = new SpeedMonitor(mySpeedometer);
+            Gearbox gearbox = new Gearbox(mySpeedometer);
+
+            // Set current speed property to a value
+            mySpeedometer.CurrentSpeed = 10;
+            mySpeedometer.CurrentSpeed = 20;
+            mySpeedometer.CurrentSpeed = 25;
+            mySpeedometer.CurrentSpeed = 30;
+            mySpeedometer.CurrentSpeed = 35;
+        }
+
+        private static void IteratorPatternDemo2()       //foreach is a more modern approach
+        {
+            Console.WriteLine("=== Road Bikes ===");
+            RoadBikeRange roadRange = new RoadBikeRange();
+            foreach (IBicycle bicycle in roadRange.Range)    //Creating a IType variable-of-type in collection (property returns a collection)
+            {
+                Console.WriteLine(bicycle);
+            }
+
+            Console.WriteLine("=== Mountain Bikes ===");
+            MountainBikeRange mountainRange = new MountainBikeRange();
+            foreach (IBicycle bicycle in mountainRange.Range)
+            {
+                Console.WriteLine(bicycle);
+            }
+
+        }
+
+        private static void IteratorPatternDemo()
+        {
+            Console.WriteLine("=== Road Bikes ===");
+            RoadBikeRange roadRange = new RoadBikeRange();
+            PrintIterator(roadRange.GetEnumerator());
+
+            Console.WriteLine("=== Mountain Bikes ===");
+            MountainBikeRange mountainRange = new MountainBikeRange();
+            PrintIterator(mountainRange.GetEnumerator());
+        }
+
+        private static void PrintIterator(IEnumerator iter)
+        {
+            while (iter.MoveNext())
+            {
+                Console.WriteLine(iter.Current);
+            }
+        }
+
+        /* Facade Design Pattern Method */
+        private static void FacadePatternDemo()
+        {
+            BikeFacade facade = new BikeFacade();    // an Object Instance
+            facade.PrepareForSale(new Downhill(BikeColor.Red, new WideWheel(20)));
         }
 
         private static void DecoratorPatternDemo()
